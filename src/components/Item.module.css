@@ -1,0 +1,15 @@
+.p {
+    font-size: 16px;
+    white-space: wrap;
+    overflow:visible
+}
+
+
+.body {
+        background-color: rgb(26, 26, 26);
+    }
+
+.strike {
+    text-decoration: line-through;
+    font-size: 16px;
+}
