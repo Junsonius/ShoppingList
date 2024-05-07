@@ -4,8 +4,9 @@ import Header from "./components/Header"
 import AddItem from "./components/AddItem"
 import ShoppingList from "./components/ShoppingList"
 import './App.css'
+import PriceFooter from './components/PriceFooter';
 
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext } from 'react';
 
 import { Container, Button, Collapse, Modal, ModalBody} from 'react-bootstrap';
 
@@ -14,22 +15,9 @@ export const listItemContext = createContext()
 
 function App() {
 
-const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: "1", unit: "kg", price: '12', checked: false, id: Date.now()}, {product: 'potatooo', qnt: "1", unit: "kg", price: '6', checked: false, id: (Date.now()+1)}])
+const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: "1", unit: "kg", price: 12.00 , checked: false, id: Date.now()}, {product: 'potatooo', qnt: "1", unit: "kg", price: 6.00 , checked: false, id: (Date.now()+1)}])
 const [activeForm, setActiveForm] = useState(false)
 const [activeModal, setActiveModal] = useState(false)
-
-const [totalPrice, setTotalPrice] = useState(0)
-
-useEffect(() => {
-  if (listItems.length === 0) return
-  const itemPrices = listItems.map((item) => item.price * item.qnt)
-  setTotalPrice(itemPrices.reduce(function(acc, cur) {return acc + cur} ))
-}, [listItems])
-
-
-console.log(totalPrice)
-console.log(listItems)
-
 
 function openForm() {
   setActiveForm(!activeForm)
@@ -38,8 +26,6 @@ function openForm() {
 function clearList() {
   setListItem([])
   setActiveModal(false)
-  setTotalPrice(0)
-
   //console.log(listItems)
 }
 
@@ -59,8 +45,11 @@ const handleShow = () => setActiveModal(true);
               <AddItem openForm={openForm} activeForm={activeForm} confirmMsg={'Adicionar'} />
             </div>
           </Collapse>
-        {listItems.length === 0 ? '' : <ShoppingList  openForm={openForm} /> }
-      {listItems.length === 0 ? '' : <Button className='w-25 align-self-end' onClick={handleShow} variant='danger'>Limpar Lista</Button>}
+        {
+          listItems.length === 0 ? '' : <> <ShoppingList  openForm={openForm} />
+          <Button className='w-25 align-self-end' onClick={handleShow} variant='danger'>Limpar Lista</Button>
+          <PriceFooter />
+        </>}
       </listItemContext.Provider>
       </Container>
 

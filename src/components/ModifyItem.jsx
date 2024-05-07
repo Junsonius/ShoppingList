@@ -35,10 +35,12 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
         const updatedList = listItems.map((item) => {
             if(item.id === formData.id) {
                 console.log(formData)
-
+                
                 return formData
             }
-            return item
+
+            
+            return {...item, price: parseFloat(item.price).toFixed(2)}
         })
         
         setListItem([...updatedList])
@@ -55,7 +57,7 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
                     <div className="d-flex gap-1">
                     <FormControl  type="number" name="qnt" className="textColor" value={formData.qnt} onChange={handleChange} placeholder="1,2,3..."></FormControl>
                     <FormSelect name="unit" value={formData.unit} onChange={handleChange}  className="w-75">
-                        <option value="un">Unidade(s)</option>
+                        <option value="unidade">Unidade(s)</option>
                         <option value="kg">Kg</option>
                         <option value="g">g</option>
                         <option value="L">L</option>

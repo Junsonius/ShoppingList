@@ -12,7 +12,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
     const [formData, setFormData] = useState({
         product: `${item ? item.product : ''}` ,
         qnt: item ? item.qnt : '',
-        unit: `${item ? item.unit : 'un'}`,
+        unit: `${item ? item.unit : 'unidade'}`,
         price: item ? item.price : '',
         checked: item ? true : false
     })
@@ -29,7 +29,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        const formDataWID = {...formData, id: Date.now() }
+        const formDataWID = {...formData, price: parseFloat(formData.price).toFixed(2) , id: Date.now() } //add ID and str -> float price
 
         setListItem([...listItems, formDataWID])
         //console.log(formData)
@@ -53,7 +53,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
                     <div className="d-flex gap-1">
                     <FormControl  type="number" name="qnt" className="textColor" value={formData.qnt} onChange={handleChange} placeholder="1,2,3..."></FormControl>
                     <FormSelect name="unit" value={formData.unit} onChange={handleChange}  className="w-75">
-                        <option value="un">Unidade(s)</option>
+                        <option value="unidade">Unidade(s)</option>
                         <option value="kg">Kg</option>
                         <option value="g">g</option>
                         <option value="L">L</option>
@@ -63,7 +63,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
                     </div>
                     </div>
                     <div>
-                    <FormLabel>Preço (opcional)</FormLabel>
+                    <FormLabel>Preço (opcional) por {formData.unit}</FormLabel>
                     <FormControl type="number" name='price' onChange={handleChange} value={formData.price} className="textColor"  placeholder="Qual o valor? (por Kg, un.)"></FormControl>
                     </div>
                     <div className="d-flex justify-content-around">
