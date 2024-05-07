@@ -1,9 +1,13 @@
 import { Form, FormControl, FormSelect, FormLabel, Button } from "react-bootstrap"
 import styles from "./AddItem.module.css"
 
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { listItemContext } from "../App"
 
-function AddItem({openForm, activeForm, setListItem, listItems, item, confirmMsg}) {
+function AddItem({openForm, activeForm, item, confirmMsg}) {
+
+
+    const {listItems, setListItem} = useContext(listItemContext)
 
     const [formData, setFormData] = useState({
         product: `${item ? item.product : ''}` ,
@@ -29,14 +33,12 @@ function AddItem({openForm, activeForm, setListItem, listItems, item, confirmMsg
 
         setListItem([...listItems, formDataWID])
         //console.log(formData)
-
         setFormData({
             product: '',
             qnt: '',
             unit: '',
             price: '',
         })
-
     }
 
     return (

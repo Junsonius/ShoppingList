@@ -1,13 +1,16 @@
 import styles from "./Item.module.css"
 import { Card, CardBody, Button, FormCheck, Collapse} from "react-bootstrap"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import ModifyItem from "./ModifyItem"
+import { listItemContext } from "../App"
 
 
 
-function Item({itemdata, setListItem, list}) {
+function Item({itemdata}) {
 
     const {product, qnt, unit, price, id, checked} = itemdata
+
+    const {listItems, setListItem} = useContext(listItemContext)
 
     const [activeEditForm, setActiveEditForm] = useState(false)
 
@@ -17,7 +20,7 @@ function Item({itemdata, setListItem, list}) {
 
     function handleCheck() {
 
-        const updatedList = list.map((item) => {
+        const updatedList = listItems.map((item) => {
             if(item.id === id) {
                 return {...item, checked: !checked}
             }
@@ -28,9 +31,9 @@ function Item({itemdata, setListItem, list}) {
 
     }
 
-    function deleteItem(list, id) {
+    function deleteItem(listItems, id) {
         
-        const updatedList = list.filter((item) => item.id !== id)
+        const updatedList = listItems.filter((item) => item.id !== id)
 
         setListItem([...updatedList])
         
@@ -53,12 +56,12 @@ function Item({itemdata, setListItem, list}) {
                     </div>
                     <div className={`d-flex gap-2 justify-content-center flex-column`}>
                         {checked ? '' : <Button onClick={openEditForm} aria-controls="collapse-edit-form" aria-expanded={setActiveEditForm} variant="secondary">Editar</Button> }
-                        <Button onClick={() => deleteItem(list, id)} variant="danger">Deletar</Button>
+                        <Button onClick={() => deleteItem(listItems, id)} variant="danger">Deletar</Button>
                     </div>
                     </>}
                         <Collapse in={activeEditForm}>
                             <div id="collapse-edit-form">
-                                <ModifyItem openForm={openEditForm} activeForm={activeEditForm} confirmMsg={'Confirmar'} setActiveForm={setActiveEditForm} setListItem={setListItem} listItems={list} item={itemdata} />
+                                <ModifyItem openForm={openEditForm} activeForm={activeEditForm} confirmMsg={'Confirmar'} setActiveForm={setActiveEditForm} item={itemdata} />
                             </div>
                         </Collapse>
                 

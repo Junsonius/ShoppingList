@@ -1,9 +1,13 @@
 import { Form, FormControl, FormSelect, FormLabel, Button } from "react-bootstrap"
 import styles from "./AddItem.module.css"
 
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { listItemContext } from "../App"
 
-function ModifyItem({openForm, activeForm, setListItem, listItems, item, confirmMsg, id}) {
+function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
+
+
+    const {listItems, setListItem} = useContext(listItemContext)
 
     const [formData, setFormData] = useState({
         id: item.id, 

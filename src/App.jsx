@@ -5,17 +5,31 @@ import AddItem from "./components/AddItem"
 import ShoppingList from "./components/ShoppingList"
 import './App.css'
 
-import { useState } from 'react';
+import { useState, createContext, useEffect } from 'react';
 
 import { Container, Button, Collapse, Modal, ModalBody} from 'react-bootstrap';
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const listItemContext = createContext()
+
 function App() {
 
-const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: 1, unit: "kg", price: '6', checked: false, id: Date.now()}, {product: 'potatooo', qnt: 1, unit: "kg", price: '6', checked: false, id: (Date.now()+1)}])
+const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: "1", unit: "kg", price: '12', checked: false, id: Date.now()}, {product: 'potatooo', qnt: "1", unit: "kg", price: '6', checked: false, id: (Date.now()+1)}])
 const [activeForm, setActiveForm] = useState(false)
 const [activeModal, setActiveModal] = useState(false)
 
-//console.log(listItems)
+const [totalPrice, setTotalPrice] = useState(0)
+
+useEffect(() => {
+  if (listItems.length === 0) return
+  const itemPrices = listItems.map((item) => item.price * item.qnt)
+  setTotalPrice(itemPrices.reduce(function(acc, cur) {return acc + cur} ))
+}, [listItems])
+
+
+console.log(totalPrice)
+console.log(listItems)
+
 
 function openForm() {
   setActiveForm(!activeForm)
@@ -24,6 +38,7 @@ function openForm() {
 function clearList() {
   setListItem([])
   setActiveModal(false)
+  setTotalPrice(0)
 
   //console.log(listItems)
 }
@@ -37,14 +52,16 @@ const handleShow = () => setActiveModal(true);
       <Header />
       
       <Container className='d-flex flex-column gap-3 mt-5 h-50'>
+      <listItemContext.Provider value={{listItems, setListItem}}>
         {activeForm ? '' : <Button onClick={openForm} aria-controls="collapse-form" aria-expanded={activeForm} variant='primary' className='w-50 align-self-center'>Adicionar Produto</Button> }
           <Collapse in={activeForm}>
             <div id="collapse-form">
-              <AddItem openForm={openForm} activeForm={activeForm} setListItem={setListItem} listItems={listItems} confirmMsg={'Adicionar'} />
+              <AddItem openForm={openForm} activeForm={activeForm} confirmMsg={'Adicionar'} />
             </div>
           </Collapse>
-        {listItems.length === 0 ? '' : <ShoppingList list={listItems} openForm={openForm} setListItem={setListItem}  /> }
+        {listItems.length === 0 ? '' : <ShoppingList  openForm={openForm} /> }
       {listItems.length === 0 ? '' : <Button className='w-25 align-self-end' onClick={handleShow} variant='danger'>Limpar Lista</Button>}
+      </listItemContext.Provider>
       </Container>
 
       <Modal show={activeModal} onHide={handleClose}>
