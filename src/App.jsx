@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from "./components/Header"
@@ -6,18 +7,31 @@ import ShoppingList from "./components/ShoppingList"
 import './App.css'
 import PriceFooter from './components/PriceFooter';
 
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 
 import { Container, Button, Collapse, Modal, ModalBody} from 'react-bootstrap';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const listItemContext = createContext()
+export const windowWidth = createContext()
 
 function App() {
 
-const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: "1", unit: "kg", price: 12.00 , checked: false, id: Date.now()}, {product: 'potatooo', qnt: "1", unit: "kg", price: 6.00 , checked: false, id: (Date.now()+1)}])
+const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: "1", unit: "kg", price: 12.00 , checked: false, id: Date.now()}, {product: 'potatooo', qnt: "1", unit: "kg", price: 6.00 , checked: false, id: (Date.now()+1)}, {product: 'Bananananan', qnt: "1", unit: "kg", price: 12.00 , checked: false, id: Date.now()+2}, {product: 'potatooo', qnt: "1", unit: "kg", price: 6.00 , checked: false, id: (Date.now()+3)}])
 const [activeForm, setActiveForm] = useState(false)
 const [activeModal, setActiveModal] = useState(false)
+const [width, setWidth] = useState(window.innerWidth)
+
+useEffect(() => {
+  const handleResize = () => {
+    setWidth(window.innerWidth);
+  };
+  window.addEventListener('resize', handleResize);
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+}, []);
+
 
 function openForm() {
   setActiveForm(!activeForm)
@@ -34,7 +48,9 @@ const handleClose = () => setActiveModal(false);
 const handleShow = () => setActiveModal(true);
 
   return (
-    <Container className='min-vh-100 p-3'>
+    <windowWidth.Provider value={width}>
+
+    <Container className='min-vh-100 p-3 mb-5'>
       <Header />
       
       <Container className='d-flex flex-column gap-3 mt-5 h-50'>
@@ -47,7 +63,7 @@ const handleShow = () => setActiveModal(true);
           </Collapse>
         {
           listItems.length === 0 ? '' : <> <ShoppingList  openForm={openForm} />
-          <Button className='w-25 align-self-end' onClick={handleShow} variant='danger'>Limpar Lista</Button>
+          <Button className='w-25 align-self-end mb-2' onClick={handleShow} variant='danger'>Limpar Lista</Button>
           <PriceFooter />
         </>}
       </listItemContext.Provider>
@@ -61,6 +77,8 @@ const handleShow = () => setActiveModal(true);
         </ModalBody>
       </Modal>
     </Container>
+    
+    </windowWidth.Provider>
 
 
   )
