@@ -17,7 +17,7 @@ export const windowWidth = createContext()
 
 function App() {
 
-const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: "1", unit: "kg", price: 12.00 , checked: false, id: Date.now()}, {product: 'potatooo', qnt: "1", unit: "kg", price: 6.00 , checked: false, id: (Date.now()+1)}, {product: 'Bananananan', qnt: "1", unit: "kg", price: 12.00 , checked: false, id: Date.now()+2}, {product: 'potatooo', qnt: "1", unit: "kg", price: 6.00 , checked: false, id: (Date.now()+3)}])
+const [listItems, setListItem] = useState([{product: 'Bananananan', qnt: "2", unit: "kg", price: 12.00 , total: 24, checked: false, id: 1}, {product: 'potatooo', qnt: "1", unit: "kg", price: 0 , total: 0, checked: false, id: (2)}, {product: 'Bananananan', qnt: "1", unit: "kg", price: 12.00,  total: 12, checked: false, id: 3}, {product: 'potatooo', qnt: "1", unit: "kg", price: 6.00,  total: 6 , checked: false, id: (4)}])
 const [activeForm, setActiveForm] = useState(false)
 const [activeModal, setActiveModal] = useState(false)
 const [width, setWidth] = useState(window.innerWidth)
@@ -32,6 +32,7 @@ useEffect(() => {
   };
 }, []);
 
+console.log(listItems)
 
 function openForm() {
   setActiveForm(!activeForm)

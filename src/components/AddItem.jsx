@@ -10,11 +10,12 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
     const {listItems, setListItem} = useContext(listItemContext)
 
     const [formData, setFormData] = useState({
-        product: `${item ? item.product : ''}` ,
+        product: '',
         qnt: item ? item.qnt : '',
-        unit: `${item ? item.unit : 'unidade'}`,
-        price: item ? item.price : '',
-        checked: item ? true : false
+        unit: 'unidade',
+        price: '' ,
+        total: 0,
+        checked: false
     })
 
     const handleChange = (e) => {
@@ -29,7 +30,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        const formDataWID = {...formData, price: parseFloat(formData.price).toFixed(2) , id: Date.now() } //add ID and str -> float price
+        const formDataWID = {...formData, price: parseFloat(formData.price), total: (formData.price * (formData.qnt !== '' ? formData.qnt : 1))  , id: Date.now() } //add ID and str -> float price
 
         setListItem([...listItems, formDataWID])
         //console.log(formData)
@@ -38,6 +39,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
             qnt: '',
             unit: '',
             price: '',
+            total: 0,
         })
     }
 
@@ -66,6 +68,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
                     <FormLabel>Preço (opcional) por {formData.unit}</FormLabel>
                     <FormControl type="number" name='price' onChange={handleChange} value={formData.price} className="textColor"  placeholder="Qual o valor? (por Kg, un.)"></FormControl>
                     </div>
+                    <p>Total: R$ {(formData.price * (formData.qnt !== '' ? formData.qnt : 1)).toFixed(2)}</p>
                     <div className="d-flex justify-content-around">
                     <Button type="submit">{confirmMsg}</Button>
                     <Button onClick={openForm} aria-controls="collapse-form" aria-expanded={activeForm}>Fechar</Button>

@@ -8,7 +8,7 @@ import { listItemContext } from "../App"
 
 function Item({itemdata}) {
 
-    const {product, qnt, unit, price, id, checked} = itemdata
+    const {product, qnt, unit, price, id, checked, total} = itemdata
 
     const {listItems, setListItem} = useContext(listItemContext)
 
@@ -49,10 +49,18 @@ function Item({itemdata}) {
                 <CardBody className="d-flex gap-3 justify-content-between align-items-center">
                 {activeEditForm ? '' : <>
                     <FormCheck onClick={handleCheck} />
-                    <div className={`d-flex gap-3 align-self-center flex-wrap`}>
-                        {qnt > 0 ? <p id="qnt" className={` ${checked ? `${styles.strike} ${styles.p}` : styles.p}`}>{qnt} {unit}</p> : ''}
-                        <p id="name" className={` ${checked ? `${styles.strike} ${styles.p}` : styles.p}`}>{product}</p> 
-                        {price === '' ? '' : <p className={` ${checked ? `${styles.strike} ${styles.p}` : styles.p}`}>R$ {price}</p>}
+                    <div className={`d-flex gap-3 align-self-center flex-column`}>
+                        <div className="d-flex flex-row gap-2 ">
+                            {qnt > 0 ? <p id="qnt" className={` ${checked ? `${styles.strike} ${styles.p}` : styles.p}`}>{qnt} {unit === 'unidade' ? '' : unit} </p> : ''}
+                            <p id="name" className={` ${checked ? `${styles.strike} ${styles.p}` : styles.p}`}>{product}</p> 
+                        </div>
+                        {total === 0 ? '' :
+                            <>
+                                <p> Total R$ {total}</p>
+                                <p>(R$ {price}/{unit})</p>
+                            </>
+                            
+                        }
                     </div>
                     <div className={`d-flex gap-2 justify-content-center flex-column`}>
                         {checked ? '' : <Button onClick={openEditForm} aria-controls="collapse-edit-form" aria-expanded={setActiveEditForm} variant="secondary">Editar</Button> }

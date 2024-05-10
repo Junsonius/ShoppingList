@@ -13,6 +13,8 @@ function PriceFooter() {
     const width = useContext(windowWidth)
 
   function shakeTimer() {
+
+    setShaking(true)
     setTimeout(() => {
       setShaking(false)
     }, 800);
@@ -22,7 +24,7 @@ function PriceFooter() {
         if (listItems.length === 0) return setTotalPrice(0)
         
         const itemPrices = listItems.map((item) => {
-            return item.price * item.qnt
+            return item.total
           })
 
         setTotalPrice(parseFloat(itemPrices.reduce(function(acc, cur) {return acc + cur})).toFixed(2))
@@ -30,27 +32,30 @@ function PriceFooter() {
         function updateCart() {
 
           const cartAmount = listItems.filter(item => item.checked)
-          if (cartAmount.length === 0) return setCart(0)
-          
-          const cartSum = cartAmount.map((item) => {
-            return item.price * item.qnt
+          if (cartAmount.length === 0) {
+            shakeTimer()
+            return setCart(0)}
 
-          })
-          setCart(cartSum.reduce(function(acc, cur) {return acc + cur}).toFixed(2))
-          setShaking(true)
+          const cartSum = cartAmount.map((item) => {
+            return item.total
+
+          }).reduce(function(acc, cur) {return acc + cur})
+
+          if (cart === cartSum) return
+          setCart(cartSum)
           shakeTimer()
         }
 
         updateCart()
 
-      }  , [listItems])
+      }  , [listItems, cart])
 
     return (
         <div className={`d-flex ${width < 576 ? "fixed-bottom rounded-top" : "sticky-bottom rounded" } justify-content-around p-3 bg-success`}>
             
             <span className="d-flex gap-2 align-items-center">
             <FontAwesomeIcon icon={faCalculator} size="lg" color="white" />
-              <p>Total R$ {totalPrice}</p>
+              <p>Total R$ {parseFloat(totalPrice).toFixed(2)}</p>
             </span>
             <span className="d-flex gap-2 align-items-center">
               <FontAwesomeIcon icon={faCartShopping} size="lg"color="white" shake={shaking ? true : false} />

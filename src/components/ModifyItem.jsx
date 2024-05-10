@@ -15,6 +15,7 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
         qnt: item ? item.qnt : '',
         unit: `${item ? item.unit : ''}`,
         price: item ? item.price : '',
+        total: item ? item.total : 0,
         checked: false
     })
 
@@ -36,11 +37,11 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
             if(item.id === formData.id) {
                 console.log(formData)
                 
-                return formData
+                return {...formData, price: parseFloat(formData.price), total: (formData.price * (formData.qnt !== '' ? formData.qnt : 1))}
             }
 
             
-            return {...item, price: parseFloat(item.price).toFixed(2)}
+            return {...item, price: parseFloat(item.price)}
         })
         
         setListItem([...updatedList])
@@ -70,6 +71,7 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
                     <FormLabel>Preço (opcional)</FormLabel>
                     <FormControl type="number" name='price' onChange={handleChange} value={formData.price} className="textColor"  placeholder="Qual o valor? (por Kg, un.)"></FormControl>
                     </div>
+                    <p>Total: R$ {(formData.price * (formData.qnt !== '' ? formData.qnt : 1)).toFixed(2)}</p>
                     <div className="d-flex justify-content-around">
                     <Button type="submit">{confirmMsg}</Button>
                     <Button onClick={openForm} aria-controls="collapse-edit-form" aria-expanded={activeForm}>Fechar</Button>
