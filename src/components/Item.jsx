@@ -56,7 +56,7 @@ function Item({itemdata}) {
                         </div>
                         {total === 0 ? '' :
                             <>
-                                <p> Total R$ {total}</p>
+                                <p> Total R$ {total.toFixed(2)}</p>
                                 <p>(R$ {price}/{unit})</p>
                             </>
                             
