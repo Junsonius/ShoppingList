@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { listItemContext, windowWidth } from "../App"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faCalculator } from "@fortawesome/free-solid-svg-icons"
+import styles from "./PriceFooter.module.css"
 
 function PriceFooter() {
 
@@ -51,13 +52,13 @@ function PriceFooter() {
       }  , [listItems, cart])
 
     return (
-        <div className={`d-flex ${width < 576 ? "fixed-bottom rounded-top" : "sticky-bottom rounded" } justify-content-around p-3 bg-success`}>
+        <div className={`d-flex ${width < 576 ? "fixed-bottom rounded-top bg-success" : "flex-row gap-3 row col-6" } p-3`}>
             
-            <span className="d-flex gap-2 align-items-center">
+            <span className={`${width < 576? "d-flex gap-2 align-items-center" : "d-flex gap-2 align-items-center bg-success p-3 rounded" } ${styles.maxWidth}`}>
             <FontAwesomeIcon icon={faCalculator} size="lg" color="white" />
               <p>Total R$ {parseFloat(totalPrice).toFixed(2)}</p>
             </span>
-            <span className="d-flex gap-2 align-items-center">
+            <span className={`${width < 576? "d-flex gap-2 align-items-center" : "d-flex gap-2 align-items-center bg-success p-3 rounded"} ${styles.maxWidth}`}>
               <FontAwesomeIcon icon={faCartShopping} size="lg"color="white" shake={shaking ? true : false} />
               <p>Carrinho R$ {parseFloat(cart).toFixed(2)}</p>
             </span>

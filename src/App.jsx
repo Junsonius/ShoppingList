@@ -51,20 +51,22 @@ const handleShow = () => setActiveModal(true);
   return (
     <windowWidth.Provider value={width}>
 
-    <Container className='min-vh-100 p-3 mb-5'>
+    <Container className='min-vh-100 mb-5'>
       <Header />
       
-      <Container className='d-flex flex-column gap-3 mt-5 h-50'>
+      <Container className='row justify-content-center align-items-center gap-3 mt-5 h-50'>
       <listItemContext.Provider value={{listItems, setListItem}}>
-        {activeForm ? '' : <Button onClick={openForm} aria-controls="collapse-form" aria-expanded={activeForm} variant='primary' className='w-50 align-self-center'>Adicionar Produto</Button> }
+        {activeForm ? '' : <Button onClick={openForm} aria-controls="collapse-form" aria-expanded={activeForm} variant='primary' className='align-self-center col-6 col-md-3'>Adicionar Produto</Button> }
           <Collapse in={activeForm}>
             <div id="collapse-form">
+              <div className='d-flex justify-content-center'>
               <AddItem openForm={openForm} activeForm={activeForm} confirmMsg={'Adicionar'} />
+              </div>
             </div>
           </Collapse>
         {
           listItems.length === 0 ? '' : <> <ShoppingList  openForm={openForm} />
-          <Button className='w-25 align-self-end mb-2' onClick={handleShow} variant='danger'>Limpar Lista</Button>
+          <Button className={`col-3 mb-2 order-last p-2`} onClick={handleShow} variant='danger'>Limpar Lista</Button>
           <PriceFooter />
         </>}
       </listItemContext.Provider>

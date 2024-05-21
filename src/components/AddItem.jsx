@@ -44,7 +44,7 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
     }
 
     return (
-            <div className={`p-3 rounded ${styles.background}`}>
+            <div className={`p-3 rounded col-md-6 align-self-center ${styles.background}`}>
                 <Form onSubmit={handleSubmit} className="d-grid gap-4">
 
                     <h1 className="text-center fs-4"> Novo Produto :)</h1>

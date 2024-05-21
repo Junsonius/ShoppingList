@@ -1,5 +1,5 @@
 import styles from "./Item.module.css"
-import { Card, CardBody, Button, FormCheck, Collapse} from "react-bootstrap"
+import { Card, CardBody, Button, FormCheck, Collapse, Row} from "react-bootstrap"
 import { useState, useContext } from "react"
 import ModifyItem from "./ModifyItem"
 import { listItemContext } from "../App"
@@ -44,6 +44,7 @@ function Item({itemdata}) {
     //flex-${width > 200 ? 'row' : 'column'}
     //flex-${prevWidth.current < width ? 'row' : 'column' }
     return(
+        <Row lg={1} >
            <Card className={styles.body}>
 
                 <CardBody className="d-flex gap-3 justify-content-between align-items-center">
@@ -75,6 +76,7 @@ function Item({itemdata}) {
                 
                 </CardBody>
            </Card>
+        </Row>
     )
 }
 
