@@ -52,9 +52,9 @@ function PriceFooter() {
       }  , [listItems, cart])
 
     return (
-        <div className={`d-flex ${width < 576 ? "fixed-bottom rounded-top bg-success" : "flex-row gap-3 row col-6" } p-3`}>
+        <div className={`d-flex ${width < 576 ? "fixed-bottom rounded-top bg-success justify-content-around" : "flex-row gap-3 row col-6" } p-3`}>
             
-            <span className={`${width < 576? "d-flex gap-2 align-items-center" : "d-flex gap-2 align-items-center bg-success p-3 rounded" } ${styles.maxWidth}`}>
+            <span className={`${width < 576? "d-flex gap-2 align-items-center " : "d-flex gap-2 align-items-center bg-success p-3 rounded" } ${styles.maxWidth}`}>
             <FontAwesomeIcon icon={faCalculator} size="lg" color="white" />
               <p>Total R$ {parseFloat(totalPrice).toFixed(2)}</p>
             </span>

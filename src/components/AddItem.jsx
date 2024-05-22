@@ -1,4 +1,4 @@
-import { Form, FormControl, FormSelect, FormLabel, Button } from "react-bootstrap"
+import { Form, FormControl, FormSelect, FormLabel, Button, Alert } from "react-bootstrap"
 import styles from "./AddItem.module.css"
 
 import { useState, useContext } from "react"
@@ -8,6 +8,8 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
 
 
     const {listItems, setListItem} = useContext(listItemContext)
+
+    const [isRepeated, setIsRepeated] = useState(false)
 
     const [formData, setFormData] = useState({
         product: '',
@@ -30,7 +32,11 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        const formDataWID = {...formData, price: parseFloat(formData.price), total: (formData.price * (formData.qnt !== '' ? formData.qnt : 1))  , id: Date.now() } //add ID and str -> float price
+
+        const formDataWID = {...formData, price: parseFloat(formData.price), total: (formData.price * (formData.qnt !== '' ? formData.qnt : 1) * (formData.unit === 'g' ? 0.001 : 1 ))  , id: Date.now() } //add ID and str -> float price
+        
+        if (listItems.find(item => item.product.toLowerCase() === formData.product.toLowerCase()) ) return setIsRepeated(true)
+            else setIsRepeated(false)
 
         setListItem([...listItems, formDataWID])
         //console.log(formData)
@@ -52,23 +58,23 @@ function AddItem({openForm, activeForm, item, confirmMsg}) {
                     <FormControl required type="text" name="product" className="textColor" value={formData.product} onChange={handleChange} placeholder="adicione aqui seu produto"></FormControl>
                     <div>
                     <FormLabel>Quantidade (opcional)</FormLabel>
-                    <div className="d-flex gap-1">
-                    <FormControl  type="number" name="qnt" className="textColor" value={formData.qnt} onChange={handleChange} placeholder="1,2,3..."></FormControl>
-                    <FormSelect name="unit" value={formData.unit} onChange={handleChange}  className="w-75">
-                        <option value="unidade">Unidade(s)</option>
-                        <option value="kg">Kg</option>
-                        <option value="g">g</option>
-                        <option value="L">L</option>
-                        <option value="ml">Ml</option>
-                    </FormSelect>
-
-                    </div>
+                        <div className="d-flex gap-1">
+                            <FormControl  type="number" name="qnt" className="textColor" value={formData.qnt} onChange={handleChange} placeholder="1,2,3..."></FormControl>
+                            <FormSelect name="unit" value={formData.unit} onChange={handleChange}  className="w-75">
+                                <option value="unidade">Unidade(s)</option>
+                                <option value="kg">Kg</option>
+                                <option value="g">g</option>
+                                <option value="L">L</option>
+                                <option value="ml">Ml</option>
+                            </FormSelect>
+                        </div>
                     </div>
                     <div>
-                    <FormLabel>Preço (opcional) por {formData.unit}</FormLabel>
+                    <FormLabel>Preço (opcional) por {formData.unit === "g" ? 'Kg' : formData.unit}</FormLabel>
                     <FormControl type="number" name='price' onChange={handleChange} value={formData.price} className="textColor"  placeholder="Qual o valor? (por Kg, un.)"></FormControl>
                     </div>
-                    <p>Total: R$ {(formData.price * (formData.qnt !== '' ? formData.qnt : 1)).toFixed(2)}</p>
+                    <p>Total: R$ {(formData.price * (formData.qnt !== '' ? formData.qnt : 1) * (formData.unit === 'g' ? 0.001 : 1 )).toFixed(2)}</p>
+                    {isRepeated ? <Alert variant="danger">Você já possui este produto na sua lista de compras</Alert>: ''}
                     <div className="d-flex justify-content-around">
                     <Button type="submit">{confirmMsg}</Button>
                     <Button onClick={openForm} aria-controls="collapse-form" aria-expanded={activeForm}>Fechar</Button>

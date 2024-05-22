@@ -37,7 +37,7 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
             if(item.id === formData.id) {
                 console.log(formData)
                 
-                return {...formData, price: parseFloat(formData.price), total: (formData.price * (formData.qnt !== '' ? formData.qnt : 1))}
+                return {...formData, price: parseFloat(formData.price), total: (formData.price * (formData.qnt !== '' ? formData.qnt : 1) * (formData.unit === 'g' ? 0.001 : 1 ))}
             }
 
             
@@ -49,10 +49,12 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
         openForm()
     }
 
+//    <FormControl required type="text" name="product" className="textColor" value={formData.product} onChange={handleChange} placeholder="adicione aqui seu produto"></FormControl>
+
     return (
             <div className={`p-3 rounded ${styles.background}`}>
                 <Form onSubmit={updateItem} className="d-grid gap-4">
-                    <FormControl required type="text" name="product" className="textColor" value={formData.product} onChange={handleChange} placeholder="adicione aqui seu produto"></FormControl>
+                    <h1 className="fs-1 fw-bold text-center">{formData.product}</h1>
                     <div>
                     <FormLabel>Quantidade (opcional)</FormLabel>
                     <div className="d-flex gap-1">
@@ -68,10 +70,10 @@ function ModifyItem({openForm, activeForm, item, confirmMsg, id}) {
                     </div>
                     </div>
                     <div>
-                    <FormLabel>Preço (opcional)</FormLabel>
+                    <FormLabel>Preço (opcional) por {formData.unit === "g" ? 'Kg' : formData.unit}</FormLabel>
                     <FormControl type="number" name='price' onChange={handleChange} value={formData.price} className="textColor"  placeholder="Qual o valor? (por Kg, un.)"></FormControl>
                     </div>
-                    <p>Total: R$ {(formData.price * (formData.qnt !== '' ? formData.qnt : 1)).toFixed(2)}</p>
+                    <p>Total: R$ {(formData.price * (formData.qnt !== '' ? formData.qnt : 1) * (formData.unit === 'g' ? 0.001 : 1 )).toFixed(2)}</p>
                     <div className="d-flex justify-content-around">
                     <Button type="submit">{confirmMsg}</Button>
                     <Button onClick={openForm} aria-controls="collapse-edit-form" aria-expanded={activeForm}>Fechar</Button>
